@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/components/protectedroute.tsx","./src/components/toast.tsx","./src/lib/api.ts","./src/pages/gallery.tsx","./src/pages/home.tsx","./src/pages/login.tsx"],"version":"5.9.2"}
+{"root":["./src/App.tsx","./src/main.tsx","./src/components/ProtectedRoute.tsx","./src/components/Toast.tsx","./src/lib/api.ts","./src/pages/Gallery.tsx","./src/pages/Home.tsx","./src/pages/Login.tsx"],"version":"5.9.2"}

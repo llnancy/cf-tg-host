@@ -54,6 +54,35 @@ export default function Home() {
     return () => document.removeEventListener('click', handleClick, true)
   }, [hasActiveUpload])
 
+  // 剪贴板粘贴上传
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      // 如果正在上传，忽略粘贴
+      if (hasActiveUpload) return
+      const items = e.clipboardData?.items
+      if (!items) return
+      const files: File[] = []
+      // 遍历剪贴板项
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        // 检查是否为图片或视频文件
+        if (item.kind === 'file' && item.type.startsWith('image/')) {
+          const file = item.getAsFile()
+          if (file) files.push(file)
+        }
+      }
+
+      if (files.length > 0) {
+        e.preventDefault()
+        enqueueAndUpload(files)
+        enqueueToast(`已从剪贴板粘贴 ${files.length} 个文件`, 'info')
+      }
+    }
+
+    document.addEventListener('paste', handlePaste)
+    return () => document.removeEventListener('paste', handlePaste)
+  }, [hasActiveUpload])
+
   // 刷新/关闭拦截（外部导航）
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
