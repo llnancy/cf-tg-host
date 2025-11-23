@@ -132,7 +132,7 @@ SESSION_SECRET=your_session_secret        # JWT 会话加密密钥 (随机字符
 img_url=your_kv_namespace_binding         # Cloudflare KV 命名空间绑定名称
 
 # 防盗链配置 (可选)
-ALLOWED_REFERER=true                      # 是否强制关闭防盗链
+ALLOWED_REFERER=false                     # 是否强制关闭防盗链
 ALLOWED_ORIGINS=yourdomain.com,localhost  # 允许访问的域名列表，逗号分隔
 
 # Cloudflare API (可选，用于缓存清理)
