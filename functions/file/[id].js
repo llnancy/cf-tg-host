@@ -51,10 +51,6 @@ export async function onRequest(context) {
 
   // If the response is OK, proceed with further checks
   if (response.ok) {
-    // Allow the admin page to directly view the image
-    if (request.headers.get("Referer") === `${url.origin}/admin`) {
-      return response;
-    }
 
     // 从 URL 路径中提取完整的文件名（包括扩展名）
     const fullFileName = url.pathname.split("/").pop() || fileId;
@@ -75,6 +71,30 @@ export async function onRequest(context) {
     // 透传类型，但覆盖 Content-Disposition
     const filename = fullFileName || "file";
     headers.set("Content-Disposition", `inline; filename="${filename}"`);
+    const ext = filename.split(".").pop();
+    if (ext) {
+      const mime = {
+        avif: "image/avif",
+        bmp: "image/bmp",
+        gif: "image/gif",
+        jpg: "image/jpeg",
+        jpeg: "image/jpeg",
+        jfif: "image/jpeg",
+        png: "image/png",
+        svg: "image/svg+xml",
+        webp: "image/webp",
+        mp4: "video/mp4",
+        webm: "video/webm",
+        mp3: "audio/mpeg",
+        ogg: "audio/ogg",
+        wav: "audio/wav",
+        pdf: "application/pdf"
+      }[ext.toLowerCase()];
+      const currentContentType = headers.get("Content-Type");
+      if (mime && (!currentContentType || currentContentType === "application/octet-stream")) {
+        headers.set("Content-Type", mime);
+      }
+    }
     return new Response(response.body, {
       status: response.status,
       statusText: response.statusText,
