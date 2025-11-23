@@ -14,8 +14,8 @@ export async function onRequest(context) {
       .map((s) => s.trim())
       .filter(Boolean)
   ]);
-  let allowedReferer = false;
-  if (referer) {
+  let allowedReferer = env.ALLOWED_REFERER;
+  if (referer || allowedReferer) {
     try {
       const r = new URL(referer);
       // 本地开发域名直接放行
